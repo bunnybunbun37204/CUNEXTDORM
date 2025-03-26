@@ -1,0 +1,11 @@
+---
+import { trpc } from "../lib/trpc";
+
+const users = await trpc.getUsers.query();
+---
+
+<ul>
+  {users.map(user => (
+    <li data-id={user.id}>{user.email}</li>
+  ))}
+</ul>
