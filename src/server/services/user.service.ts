@@ -1,4 +1,4 @@
-import { usersModel } from "../models/users.model";
+import { usersModel } from "../models/Users.model";
 
 export const userService = {
 	async getUsers() {
