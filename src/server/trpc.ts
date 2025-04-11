@@ -9,7 +9,7 @@ export const appRouter = t.router({
 		return userService.getUsers();
 	}),
 	addUser: t.procedure
-		.input(z.object({ email: z.string().email(), name: z.string().optional() }))
+		.input(z.object({ email: z.string().email(), name: z.string() }))
 		.mutation(async ({ input }) => {
 			console.log(input);
 			return userService.addUser(input);
