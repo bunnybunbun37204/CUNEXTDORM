@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import { DormApplication } from "../../domain/entities/dorm-application.entity";
 import { ApplicationStatus } from "../../domain/enums/application-status.enum";
 import type { ActivityRepository } from "../../domain/interfaces/repositories/activity.repository";
@@ -13,7 +14,7 @@ export class SubmitApplicationUseCase {
 	async execute(dto: SubmitApplicationDto): Promise<DormApplication> {
 		// สร้าง Application Entity ใหม่
 		const application = new DormApplication(
-			"12345", // ID ที่สร้างขึ้นใหม่
+			uuid(), // ID ที่สร้างขึ้นใหม่
 			dto.applicantId, // จาก DTO
 			dto.academicYear, // จาก DTO
 			ApplicationStatus.Pending,
