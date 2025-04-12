@@ -18,12 +18,21 @@ function UsersForm() {
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
 
-	const addUserMutation = trpc.addUser.useMutation();
+	const addSubmitApplication = trpc.submitApplication.useMutation();
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		try {
-			await addUserMutation.mutateAsync({ email, name });
+			await addSubmitApplication.mutateAsync({
+				applicantId: "6b92653e-3eae-4fd5-a46b-a4ce07f5872c",
+				academicYear: "2023-2024",
+				answers: [
+					{
+						questionId: "1",
+						answerText: name,
+					},
+				],
+			});
 			alert("User added successfully!");
 			setEmail("");
 			setName("");
@@ -68,10 +77,10 @@ function UsersForm() {
 
 					<button
 						type="submit"
-						disabled={addUserMutation.isPending}
+						disabled={addSubmitApplication.isPending}
 						className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
 					>
-						{addUserMutation.isPending ? "Adding..." : "Add User"}
+						{addSubmitApplication.isPending ? "Adding..." : "Add User"}
 					</button>
 				</form>
 			</div>
