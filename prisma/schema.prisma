@@ -7,8 +7,151 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  TENANT
+  OWNER
+  ADMIN
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  LATE
+}
+
+enum MaintenanceStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum NotificationType {
+  EMAIL
+  SMS
+  SYSTEM
+}
+
 model User {
-  id    String  @id @default(uuid())
-  email String  @unique
-  name  String?
+  id              String               @id @default(uuid())
+  email           String               @unique
+  name            String
+  role            UserRole             @default(TENANT)
+  phone           String?
+  universityId    String?
+  verifiedStudent Boolean              @default(false)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  // Relations
+  ownedRooms      DormRoom[]           @relation("DormOwner")
+  agreements      RentalAgreement[]
+  maintenanceReq  MaintenanceRequest[]
+  payments        RentPayment[]
+  notifications   Notification[]
+}
+
+model DormBuilding {
+  id          String     @id @default(uuid())
+  name        String     @unique  // ชื่อตึก เช่น "ตึก 9"
+  totalFloors Int        // จำนวนชั้นทั้งหมด
+  address     String?    // ที่อยู่ละเอียด
+  rooms       DormRoom[] 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model DormRoom {
+  id                String     @id @default(uuid())
+  buildingId        String
+  floorNumber       Int        // หมายเลขชั้น (1, 2, 3,...)
+  roomNumber        String     // หมายเลขห้อง (เช่น "901")
+  facilities        String[]   // ["แอร์", "ตู้เย็น", "WIFI"]
+  isUnderMaintenance Boolean    @default(false)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  building  DormBuilding @relation(fields: [buildingId], references: [id])
+  beds      Bed[] 
+
+  User User[] @relation("DormOwner")
+
+  RentalAgreement RentalAgreement[]
+
+  MaintenanceRequest MaintenanceRequest[]
+}
+
+model Bed {
+  id          String     @id @default(uuid())
+  roomId      String
+  bedNumber   Int        // หมายเลขเตียงในห้อง (1, 2, 3,...)
+  status      BedStatus  @default(AVAILABLE)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  room        DormRoom         @relation(fields: [roomId], references: [id])
+  agreements  RentalAgreement[]
+}
+
+enum BedStatus {
+  AVAILABLE   // พร้อมใช้งาน
+  OCCUPIED    // มีผู้เช่าแล้ว
+  MAINTENANCE // กำลังซ่อมบำรุง
+}
+
+model RentalAgreement {
+  id           String         @id @default(uuid())
+  userId       String
+  roomId       String
+  startDate    DateTime
+  endDate      DateTime
+  monthlyRent  Float
+  status       String         @default("ACTIVE")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  user         User           @relation(fields: [userId], references: [id])
+  room         DormRoom       @relation(fields: [roomId], references: [id])
+  payments     RentPayment[]
+
+  Bed Bed[]
+}
+
+model RentPayment {
+  id           String         @id @default(uuid())
+  agreementId  String
+  amount       Float
+  dueDate      DateTime
+  paidDate     DateTime?
+  status       PaymentStatus  @default(PENDING)
+  method       String         // CREDIT_CARD, BANK_TRANSFER
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  agreement    RentalAgreement @relation(fields: [agreementId], references: [id])
+
+  User User[]
+}
+
+model MaintenanceRequest {
+  id           String             @id @default(uuid())
+  userId       String
+  roomId       String
+  description  String
+  status       MaintenanceStatus  @default(PENDING)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  user         User               @relation(fields: [userId], references: [id])
+  room         DormRoom           @relation(fields: [roomId], references: [id])
+}
+
+model Notification {
+  id           String           @id @default(uuid())
+  userId       String
+  type         NotificationType
+  content      String
+  status       String           @default("SENT")
+  sentAt       DateTime         @default(now())
+
+  user         User             @relation(fields: [userId], references: [id])
 }

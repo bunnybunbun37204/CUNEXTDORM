@@ -8,12 +8,10 @@ export const appRouter = t.router({
 	getUsers: t.procedure.query(async () => {
 		return userService.getUsers();
 	}),
-	addUser: t.procedure
-		.input(z.object({ email: z.string().email(), name: z.string().optional() }))
-		.mutation(async ({ input }) => {
-			console.log(input);
-			return userService.addUser(input);
-		}),
+	addUser: t.procedure.input(z.object({ email: z.string().email(), name: z.string() })).mutation(async ({ input }) => {
+		console.log(input);
+		return userService.addUser(input);
+	}),
 });
 
 export type AppRouter = typeof appRouter;
