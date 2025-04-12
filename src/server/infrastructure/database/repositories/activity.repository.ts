@@ -6,7 +6,7 @@ export class PrismaActivityRepository implements ActivityRepository {
 	constructor(private readonly prisma: PrismaClient) {}
 	async findByUser(userId: string): Promise<DormActivity[]> {
 		const activities = await this.prisma.dormActivity.findMany({
-			where: { id: userId },
+			where: { participants: { some: { id: userId } } },
 		});
 		return activities.map(
 			(activity) =>

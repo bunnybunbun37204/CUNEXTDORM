@@ -5,13 +5,13 @@ import type { DormQuestion } from "./dorm-questtion.entity";
 // src/domain/entities/dorm-application.ts
 export class DormApplication {
 	private _answers: Map<string, string> = new Map();
-	private _activities: DormActivity[] = [];
 
 	constructor(
 		public readonly id: string,
 		public readonly applicantId: string,
 		public readonly academicYear: string,
 		public status: ApplicationStatus,
+		public activities: DormActivity[] = [], // เพิ่ม field นี้
 	) {}
 
 	// Business Rule 1: ต้องตอบคำถามบังคับทั้งหมด
@@ -26,7 +26,7 @@ export class DormApplication {
 
 	// Business Rule 2: ต้องเข้าร่วมกิจกรรม 3 กิจกรรมขึ้นไป
 	validateActivityParticipation(): void {
-		if (this._activities.length < 3) {
+		if (this.activities.length < 3) {
 			throw new Error("ต้องเข้าร่วมกิจกรรมอย่างน้อย 3 กิจกรรม");
 		}
 	}
@@ -36,6 +36,6 @@ export class DormApplication {
 	}
 
 	addActivity(activity: DormActivity): void {
-		this._activities.push(activity);
+		this.activities.push(activity);
 	}
 }

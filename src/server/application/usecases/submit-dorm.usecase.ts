@@ -22,6 +22,7 @@ export class SubmitApplicationUseCase {
 
 		// ดึงกิจกรรมจาก Repository
 		const activities = await this.activityRepo.findByUser(dto.applicantId);
+		console.info("Activities found:", activities);
 
 		// เพิ่มกิจกรรมลงใน Application
 		for (const activity of activities) {
