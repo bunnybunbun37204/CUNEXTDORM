@@ -1,26 +1,58 @@
 ---
+import type { Fragment } from "react";
 import "../styles/global.css";
+import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZL7EN8T99Z"
+    ></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/webp" href="/favicon-vlvu.webp" />
+    <meta name="generator" content="Astro" />
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0" />
+	<title>Astro Basics</title>
+</head>
+  <body>
+    <main class="mobile">
+      <Header/>
+      <Footer/>
+      <div class="px-4 pt-4 pb-24">
+        <article class="max-w-md mx-auto bg-white p-6 rounded-xl shadow-sm">
+        <slot/>
+        </article>
+      </div>
+    </main>
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  .mobile {
+    display: relative;
+    max-width: 448px;
+    margin: 0 auto;
+    min-height: 100vh;
+    height: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 6rem;
+    margin-bottom: 6rem;
+	background-image: url("../assets/background.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+  }
+
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
 </style>

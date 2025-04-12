@@ -1,13 +1,92 @@
 ---
-import { Users } from "../components/User";
-import UserList from "../components/UserList.astro";
-import Layout from "../layouts/Layout.astro";
+import { Users } from "@/components/User";
+import UserList from "@/components/UserList.astro";
+import Layout from "@/layouts/Layout.astro";
+import { Bed, Building, ChartLine, Link, Megaphone, Newspaper, Receipt, Settings, User } from "lucide-react";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const menulists = [
+	{
+		id: 1,
+		name: "บิลค่าเช่า",
+		icon: "Receipt",
+		path: "/bill",
+	},
+	{
+		id: 2,
+		name: "วิเคราะห์",
+		icon: "ChartLine",
+		path: "/analysis",
+	},
+	{
+		id: 3,
+		name: "ยื่นอยู่หอต่อ",
+		icon: "Building",
+		path: "/extend",
+	},
+	{
+		id: 4,
+		name: "เลือกเตียงใหม่",
+		icon: "Bed",
+		path: "/selectbed",
+	},
+	{
+		id: 5,
+		name: "สถานะเตียง",
+		icon: "Bed",
+		path: "/bedstatus",
+	},
+	{
+		id: 6,
+		name: "แจ้งเรื่อง",
+		icon: "Megaphone",
+		path: "/report",
+	},
+	{
+		id: 7,
+		name: "ข่าวสาร",
+		icon: "Newspaper",
+		path: "/news",
+	},
+	{
+		id: 8,
+		name: "ข้อมูลส่วนตัว",
+		icon: "User",
+		path: "/profile",
+	},
+	{
+		id: 9,
+		name: "ตั้งค่า",
+		icon: "Settings",
+		path: "/settings",
+	},
+];
 ---
-
+<style>
+  .icon {
+    width: 28px;
+    color: white;
+  }
+</style>
 <Layout>
-  <UserList />
-  <Users client:load />
+
+  <div class="grid-cols-3 grid gap-x-8 gap-y-4 w-fit mx-auto pb-40">
+    {menulists.map((menu) => (
+      <a
+        href={menu.path}
+        class="w-20 h-20 bg-neutral-800 rounded-xl flex flex-col justify-center items-center gap-2"
+      >
+        {menu.icon === "Receipt" && <Receipt className="icon" />}
+        {menu.icon === "ChartLine" && <ChartLine className="icon" />}
+        {menu.icon === "Building" && <Building className="icon" />}
+        {menu.icon === "Bed" && <Bed className="icon" />}
+        {menu.icon === "Megaphone" && <Megaphone className="icon" />}
+        {menu.icon === "Newspaper" && <Newspaper className="icon" />}
+        {menu.icon === "User" && <User className="icon" />}
+        {menu.icon === "Settings" && <Settings className="icon" />}
+        <span class="text-white text-xs font-Anuphan">{menu.name}</span>
+      </a>
+    ))}
+  </div>
 </Layout>

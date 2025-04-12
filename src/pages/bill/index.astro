@@ -1,0 +1,33 @@
+
+---
+import Layout from "@/layouts/Layout.astro";
+import type { Bill } from "@/types";
+import { BillAccorder } from "./components/billAccorder";
+
+const bills: Bill[] = [
+	{ id: "1", month: "January", year: 2523, status: "paid" },
+	{ id: "2", month: "February", year: 2523, status: "pending" },
+	{ id: "3", month: "March", year: 2523, status: "unpaid" },
+	{ id: "4", month: "January", year: 2524, status: "paid" },
+	{ id: "5", month: "February", year: 2524, status: "pending" },
+	{ id: "6", month: "March", year: 2524, status: "unpaid" },
+	{ id: "7", month: "January", year: 2525, status: "paid" },
+	{ id: "8", month: "February", year: 2525, status: "pending" },
+	{ id: "9", month: "March", year: 2525, status: "unpaid" },
+	{ id: "10", month: "January", year: 2526, status: "paid" },
+	{ id: "11", month: "February", year: 2526, status: "pending" },
+];
+---
+<style>
+  .icon {
+    width: 14px;
+    height: 14px;
+  }
+  </style>
+
+<Layout>
+    <header class="mb-4">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">บิลค่าเช่า</h1>
+    </header>
+    <BillAccorder bills={bills} client:load />
+</Layout>
