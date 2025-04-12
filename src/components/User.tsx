@@ -18,7 +18,7 @@ function UsersForm() {
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
 
-	const addSubmitApplication = trpc.submitApplication.useMutation();
+	const addSubmitApplication = trpc.submitApplication.submit.useMutation();
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
