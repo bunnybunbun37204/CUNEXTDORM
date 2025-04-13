@@ -1,4 +1,5 @@
 import type { ApplicationStatus } from "../enums/application-status.enum";
+import { ValidationError } from "../types/error.type";
 import type { DormActivity } from "./dorm-activity.entity";
 import type { DormQuestion } from "./dorm-questtion.entity";
 
@@ -16,10 +17,11 @@ export class DormApplication {
 
 	// Business Rule 1: ต้องตอบคำถามบังคับทั้งหมด
 	validateRequiredQuestions(questions: DormQuestion[]): void {
+		console.info("Questions: ", questions);
 		const requiredQuestions = questions.filter((q) => q.isRequired);
 		for (const q of requiredQuestions) {
 			if (!this._answers.has(q.id)) {
-				throw new Error(`ต้องตอบคำถาม: ${q.questionText}`);
+				throw new ValidationError(`ต้องตอบคำถาม: ${q.questionText}`);
 			}
 		}
 	}
@@ -27,7 +29,7 @@ export class DormApplication {
 	// Business Rule 2: ต้องเข้าร่วมกิจกรรม 3 กิจกรรมขึ้นไป
 	validateActivityParticipation(): void {
 		if (this.activities.length < 3) {
-			throw new Error("ต้องเข้าร่วมกิจกรรมอย่างน้อย 3 กิจกรรม");
+			throw new ValidationError("ต้องเข้าร่วมกิจกรรมอย่างน้อย 3 กิจกรรม");
 		}
 	}
 
