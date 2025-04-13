@@ -19,7 +19,6 @@ export const submitApplicationRouter = router({
 		.use(errorMiddleware)
 		.input(submitApplicationInput)
 		.mutation(async ({ ctx, input }) => {
-			console.log("Context:", ctx);
 			return ctx.useCases.submitApplication.execute(input);
 		}),
 });
