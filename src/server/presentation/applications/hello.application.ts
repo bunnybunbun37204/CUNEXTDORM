@@ -1,4 +1,3 @@
-import { initTRPC } from "@trpc/server";
 import { z } from "zod";
 import { publicProcedure, router } from "../base";
 
