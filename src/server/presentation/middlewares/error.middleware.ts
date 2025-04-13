@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { middleware } from "../base";
+import { middleware } from "../../infrastructure/protocol/trpc/trpc";
 
 export const errorMiddleware = middleware(async (opts) => {
 	const result = await opts.next();
