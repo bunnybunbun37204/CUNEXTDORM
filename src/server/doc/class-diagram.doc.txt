@@ -1,0 +1,190 @@
+@startuml
+
+' ########################
+' ### Core Entities ###
+' ########################
+
+class User {
+  +id: String
+  +email: String
+  +name: String
+  +role: UserRole
+  +studentId: String?
+  --
+  +register(): void
+  +login(credentials: String): Boolean
+  +reportIssue(description: String): MaintenanceLog
+  +viewNotifications(): Notification[]
+  +submitApplication(): ExtensionApplication
+  +makePayment(agreementId: String): RentPayment
+  +manageRooms(): DormRoom[]  «if Owner»
+}
+
+class DormBuilding {
+  +id: String
+  +name: String
+  +address: String?
+  --
+  +addRoom(roomNumber: String): DormRoom
+  +removeRoom(roomId: String): void
+  +listVacantRooms(): DormRoom[]
+  +syncStudentData(universityAPI: Object): void
+}
+
+class DormRoom {
+  +id: String
+  +roomNumber: String
+  +basePrice: Float
+  --
+  +calculateMonthlyCost(waterUsed: Float, electricUsed: Float): Float
+  +assignBed(user: User): Bed
+  +listFacilities(): Facility[]
+  +updatePricing(newPrice: Float): void
+}
+
+class Bed {
+  +id: String
+  +label: BedLabel
+  +status: BedStatus
+  --
+  +checkAvailability(): Boolean
+  +changeStatus(newStatus: BedStatus): void
+  +releaseBed(): void
+  +getCurrentUser(): User?
+}
+
+' ########################
+' ### Maintenance System ###
+' ########################
+
+class MaintenanceLog {
+  +id: String
+  +description: String
+  +status: MaintenanceStatus
+  --
+  +updateStatus(newStatus: MaintenanceStatus): void
+  +assignTechnician(technician: User): void
+  +addComment(comment: String): void
+  +estimateRepairCost(): Float
+}
+
+class Facility {
+  +id: String
+  +type: FacilityType
+  +status: String
+  --
+  +scheduleMaintenance(date: DateTime): void
+  +updateStatus(newStatus: String): void
+  +getMaintenanceHistory(): MaintenanceLog[]
+}
+
+' ########################
+' ### Payment System ###
+' ########################
+
+class RentalAgreement {
+  +id: String
+  +startDate: DateTime
+  +endDate: DateTime
+  --
+  +terminateAgreement(): void
+  +calculateDepositReturn(): Float
+  +generateContractPDF(): Blob
+  +listPayments(): RentPayment[]
+}
+
+class RentPayment {
+  +id: String
+  +totalAmount: Float
+  +status: PaymentStatus
+  --
+  +processPayment(amount: Float): Boolean
+  +generateReceipt(): Blob
+  +applyLateFee(feeAmount: Float): void
+  +recordUtilityUsage(water: Float, electricity: Float): void
+}
+
+' ########################
+' ### Notification System ###
+' ########################
+
+class Notification {
+  +id: String
+  +type: NotificationType
+  +content: String
+  --
+  +send(): Boolean
+  +markAsRead(): void
+  +archive(): void
+  +resend(): Boolean
+}
+
+' ########################
+' ### Extension System ###
+' ########################
+
+class ExtensionApplication {
+  +id: String
+  +status: ApplicationStatus
+  --
+  +submit(): Boolean
+  +review(approver: User): Boolean
+  +addAnswer(question: DormQuestion, answer: String): ApplicationAnswer
+  +calculateScore(): Int
+}
+
+class DormQuestion {
+  +id: String
+  +questionText: String
+  +questionType: QuestionType
+  --
+  +validateAnswer(answer: String): Boolean
+  +updateQuestion(newText: String): void
+  +setRequired(isRequired: Boolean): void
+}
+
+class ApplicationAnswer {
+  +id: String
+  +answerText: String
+  --
+  +editAnswer(newText: String): void
+  +scoreAnswer(points: Int): void
+  +attachFile(file: Blob): void
+}
+
+class DormActivity {
+  +id: String
+  +name: String
+  +maxPoints: Int
+  --
+  +registerParticipant(user: User): void
+  +calculateParticipationScore(): Int
+  +publishResults(): void
+}
+
+' ########################
+' ### Relationships ###
+' ########################
+
+User "1" -- "0..*" RentalAgreement : "has"
+User "1" -- "0..*" MaintenanceLog : "reports"
+User "0..*" -- "0..*" DormActivity : "participates in"
+User "1" -- "0..*" ExtensionApplication : "submits"
+
+DormBuilding "1" -- "1..*" DormRoom : "contains"
+DormRoom "1" -- "1..4" Bed : "has"
+DormRoom "1" -- "0..*" Facility : "contains"
+
+MaintenanceLog "1" -- "0..1" Facility : "affects"
+MaintenanceLog "1" -- "0..1" Bed : "affects"
+MaintenanceLog "1" -- "1" User : "reported by"
+MaintenanceLog "0..1" -- "0..1" User : "assigned to"
+
+RentalAgreement "1" -- "1" Bed : "for"
+RentalAgreement "1" -- "0..*" RentPayment : "has"
+
+ExtensionApplication "1" -- "1..*" ApplicationAnswer : "contains"
+ExtensionApplication "0..*" -- "0..*" DormActivity : "includes"
+ApplicationAnswer "1" -- "1" DormQuestion : "answers"
+
+@enduml

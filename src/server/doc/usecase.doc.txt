@@ -1,0 +1,27 @@
+@startuml
+left to right direction
+actor "Tenant" as Tenant
+actor "Dorm Staff" as Staff
+actor "System" as System
+
+rectangle "Dorm Management System" {
+  Tenant --> (View Payment History)
+  Tenant --> (Submit Repair Request)
+  Tenant --> (View Room Details)
+  Tenant --> (Make Online Payment)
+  Tenant --> (Receive Notifications)
+  
+  Staff --> (Manage Rooms)
+  Staff --> (Manage Tenants)
+  Staff --> (Update Repair Status)
+  Staff --> (Send Announcements)
+  Staff --> (Verify Payments)
+  Staff --> (Sync Student Data)
+  
+  System --> (Calculate Utilities)
+  System --> (Send Automatic Notifications)
+  
+  (Submit Repair Request) .> (Receive Notifications) : includes
+  (Make Online Payment) .> (View Payment History) : extends
+}
+@enduml
