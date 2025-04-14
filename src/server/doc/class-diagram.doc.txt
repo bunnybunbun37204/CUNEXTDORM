@@ -1,190 +1,178 @@
 @startuml
 
-' ########################
-' ### Core Entities ###
-' ########################
+' #########################
+' #       ENUMERATIONS     #
+' #########################
+
+enum UserRole {
+  TENANT
+  OWNER
+  ADMIN
+}
+
+enum BedLabel {
+  A
+  B
+  C
+  D
+}
+
+enum FacilityType {
+  AIRCON
+  FRIDGE
+  WATER_HEATER
+  FURNITURE
+  LIGHTING
+  OTHER
+}
+
+enum MaintenanceStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+' #########################
+' #       CLASSES         #
+' #########################
 
 class User {
-  +id: String
-  +email: String
-  +name: String
-  +role: UserRole
-  +studentId: String?
-  --
-  +register(): void
-  +login(credentials: String): Boolean
-  +reportIssue(description: String): MaintenanceLog
-  +viewNotifications(): Notification[]
-  +submitApplication(): ExtensionApplication
-  +makePayment(agreementId: String): RentPayment
-  +manageRooms(): DormRoom[]  «if Owner»
+  - id: String
+  - email: String
+  - name: String
+  - role: UserRole
+  - phone: String
+  - studentId: String
+  - academicYear: String
+  - createdAt: DateTime
+  - updatedAt: DateTime
+
+  + login(email: String, password: String): Boolean
+  + updateProfile(name: String, phone: String): void
+  + submitMaintenanceRequest(description: String): MaintenanceLog
+}
+
+class Student {
+  + viewPaymentHistory(): RentPayment[]
+  + participateInActivity(activity: DormActivity): void
+}
+
+class DormStaff {
+  + manageRooms(action: String, room: DormRoom): void
+  + processMaintenanceRequest(logId: String, status: MaintenanceStatus): void
+  + generateReport(type: String): Report
 }
 
 class DormBuilding {
-  +id: String
-  +name: String
-  +address: String?
-  --
-  +addRoom(roomNumber: String): DormRoom
-  +removeRoom(roomId: String): void
-  +listVacantRooms(): DormRoom[]
-  +syncStudentData(universityAPI: Object): void
+  - id: String
+  - name: String
+  - address: String
+  - createdAt: DateTime
+  - updatedAt: DateTime
+
+  + addRoom(room: DormRoom): void
+  + removeRoom(roomId: String): void
 }
 
 class DormRoom {
-  +id: String
-  +roomNumber: String
-  +basePrice: Float
-  --
-  +calculateMonthlyCost(waterUsed: Float, electricUsed: Float): Float
-  +assignBed(user: User): Bed
-  +listFacilities(): Facility[]
-  +updatePricing(newPrice: Float): void
+  - id: String
+  - roomNumber: String
+  - basePrice: Float
+  - waterPrice: Float
+  - electricPrice: Float
+  - status: String
+
+  + calculateTotalCost(waterUsed: Float, electricUsed: Float): Float
+  + updateStatus(newStatus: String): void
 }
 
 class Bed {
-  +id: String
-  +label: BedLabel
-  +status: BedStatus
-  --
-  +checkAvailability(): Boolean
-  +changeStatus(newStatus: BedStatus): void
-  +releaseBed(): void
-  +getCurrentUser(): User?
-}
+  - id: String
+  - label: BedLabel
+  - status: BedStatus
 
-' ########################
-' ### Maintenance System ###
-' ########################
+  + assignUser(user: User): Boolean
+  + checkAvailability(): Boolean
+}
 
 class MaintenanceLog {
-  +id: String
-  +description: String
-  +status: MaintenanceStatus
-  --
-  +updateStatus(newStatus: MaintenanceStatus): void
-  +assignTechnician(technician: User): void
-  +addComment(comment: String): void
-  +estimateRepairCost(): Float
-}
+  - id: String
+  - description: String
+  - repairType: RepairType
+  - status: MaintenanceStatus
 
-class Facility {
-  +id: String
-  +type: FacilityType
-  +status: String
-  --
-  +scheduleMaintenance(date: DateTime): void
-  +updateStatus(newStatus: String): void
-  +getMaintenanceHistory(): MaintenanceLog[]
+  + assignTechnician(technician: User): void
+  + updateStatus(newStatus: MaintenanceStatus): void
 }
-
-' ########################
-' ### Payment System ###
-' ########################
 
 class RentalAgreement {
-  +id: String
-  +startDate: DateTime
-  +endDate: DateTime
-  --
-  +terminateAgreement(): void
-  +calculateDepositReturn(): Float
-  +generateContractPDF(): Blob
-  +listPayments(): RentPayment[]
+  - id: String
+  - startDate: DateTime
+  - endDate: DateTime
+  - monthlyRent: Float
+
+  + renewAgreement(newEndDate: DateTime): void
+  + terminateAgreement(): void
 }
 
 class RentPayment {
-  +id: String
-  +totalAmount: Float
-  +status: PaymentStatus
-  --
-  +processPayment(amount: Float): Boolean
-  +generateReceipt(): Blob
-  +applyLateFee(feeAmount: Float): void
-  +recordUtilityUsage(water: Float, electricity: Float): void
-}
+  - id: String
+  - month: DateTime
+  - totalAmount: Float
+  - status: PaymentStatus
 
-' ########################
-' ### Notification System ###
-' ########################
+  + processPayment(amount: Float): Boolean
+  + generateReceipt(): PDF
+}
 
 class Notification {
-  +id: String
-  +type: NotificationType
-  +content: String
-  --
-  +send(): Boolean
-  +markAsRead(): void
-  +archive(): void
-  +resend(): Boolean
-}
+  - id: String
+  - type: NotificationType
+  - title: String
+  - content: String
 
-' ########################
-' ### Extension System ###
-' ########################
-
-class ExtensionApplication {
-  +id: String
-  +status: ApplicationStatus
-  --
-  +submit(): Boolean
-  +review(approver: User): Boolean
-  +addAnswer(question: DormQuestion, answer: String): ApplicationAnswer
-  +calculateScore(): Int
-}
-
-class DormQuestion {
-  +id: String
-  +questionText: String
-  +questionType: QuestionType
-  --
-  +validateAnswer(answer: String): Boolean
-  +updateQuestion(newText: String): void
-  +setRequired(isRequired: Boolean): void
-}
-
-class ApplicationAnswer {
-  +id: String
-  +answerText: String
-  --
-  +editAnswer(newText: String): void
-  +scoreAnswer(points: Int): void
-  +attachFile(file: Blob): void
+  + sendNotification(): void
+  + markAsRead(): void
 }
 
 class DormActivity {
-  +id: String
-  +name: String
-  +maxPoints: Int
-  --
-  +registerParticipant(user: User): void
-  +calculateParticipationScore(): Int
-  +publishResults(): void
+  - id: String
+  - name: String
+  - date: DateTime
+  - maxPoints: Integer
+
+  + addParticipant(user: User): void
+  + calculatePoints(): Integer
 }
 
-' ########################
-' ### Relationships ###
-' ########################
+' #########################
+' #    RELATIONSHIPS      #
+' #########################
 
-User "1" -- "0..*" RentalAgreement : "has"
-User "1" -- "0..*" MaintenanceLog : "reports"
-User "0..*" -- "0..*" DormActivity : "participates in"
-User "1" -- "0..*" ExtensionApplication : "submits"
+User <|-- Student
+User <|-- DormStaff
 
-DormBuilding "1" -- "1..*" DormRoom : "contains"
-DormRoom "1" -- "1..4" Bed : "has"
-DormRoom "1" -- "0..*" Facility : "contains"
+User "1" -- "many" RentalAgreement : has >
+User "1" -- "many" MaintenanceLog : reports >
+User "1" -- "many" DormActivity : participates in >
 
-MaintenanceLog "1" -- "0..1" Facility : "affects"
-MaintenanceLog "1" -- "0..1" Bed : "affects"
-MaintenanceLog "1" -- "1" User : "reported by"
-MaintenanceLog "0..1" -- "0..1" User : "assigned to"
+DormBuilding "1" -- "many" DormRoom : contains >
+DormRoom "1" -- "many" Bed : has >
+DormRoom "1" -- "many" Facility : has >
+DormRoom "1" -- "many" MaintenanceLog : associated with >
 
-RentalAgreement "1" -- "1" Bed : "for"
-RentalAgreement "1" -- "0..*" RentPayment : "has"
+Bed "1" -- "1" RentalAgreement : assigned to >
+RentalAgreement "1" -- "many" RentPayment : includes >
 
-ExtensionApplication "1" -- "1..*" ApplicationAnswer : "contains"
-ExtensionApplication "0..*" -- "0..*" DormActivity : "includes"
-ApplicationAnswer "1" -- "1" DormQuestion : "answers"
+MaintenanceLog "1" -- "0..1" Facility : affects >
+MaintenanceLog "1" -- "0..1" Bed : affects >
+
+DormActivity "1" -- "many" User : has participants >
 
 @enduml

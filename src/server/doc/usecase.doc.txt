@@ -1,27 +1,35 @@
 @startuml
 left to right direction
-actor "Tenant" as Tenant
-actor "Dorm Staff" as Staff
-actor "System" as System
 
-rectangle "Dorm Management System" {
-  Tenant --> (View Payment History)
-  Tenant --> (Submit Repair Request)
-  Tenant --> (View Room Details)
-  Tenant --> (Make Online Payment)
-  Tenant --> (Receive Notifications)
-  
-  Staff --> (Manage Rooms)
-  Staff --> (Manage Tenants)
-  Staff --> (Update Repair Status)
-  Staff --> (Send Announcements)
-  Staff --> (Verify Payments)
-  Staff --> (Sync Student Data)
-  
-  System --> (Calculate Utilities)
-  System --> (Send Automatic Notifications)
-  
-  (Submit Repair Request) .> (Receive Notifications) : includes
-  (Make Online Payment) .> (View Payment History) : extends
+actor "Student" as student
+actor "Dorm Staff" as staff
+actor "University Registry" as university
+
+rectangle "Dormitory Management System" {
+  student -- (Submit Maintenance Request)
+  student -- (Pay Rent)
+  student -- (View Room Details)
+  student -- (Update Profile)
+  student -- (Submit Extension Application)
+  student -- (Track Application Status)
+  student -- (Set Notification Preferences)
+
+  staff -- (Manage Rooms)
+  staff -- (Process Maintenance Request)
+  staff -- (Generate Reports)
+  staff -- (Update Room Status)
+  staff -- (Send Notifications)
+
+  university -- (Verify Student Status)
+
+  ' Relationships
+  (Submit Maintenance Request) .> (Log Maintenance Request) : <<include>>
+  (Pay Rent) .> (Generate Receipt) : <<include>>
+  (Submit Extension Application) .> (Validate Academic Year) : <<include>>
+  (Set Notification Preferences) <|-- (Receive Notification)
 }
+
+student --> (Receive Notification)
+staff --> (Receive Notification)
+
 @enduml
