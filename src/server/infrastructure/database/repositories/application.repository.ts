@@ -1,11 +1,14 @@
 import { ApplicationStatus, type PrismaClient } from "@prisma/client";
+import { inject, injectable } from "inversify";
 import { DormActivity } from "../../../domain/entities/dorm-activity.entity";
 import { DormApplication } from "../../../domain/entities/dorm-application.entity";
 import type { ApplicationStatus as EnumApplicationStatus } from "../../../domain/enums/application-status.enum";
 import type { ApplicationRepository } from "../../../domain/interfaces/repositories/application.repository";
+import { TYPES } from "../../constants/type.constant";
 
+@injectable()
 export class PrismaApplicationRepository implements ApplicationRepository {
-	constructor(private readonly prisma: PrismaClient) {}
+	constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) {}
 	async save(app: DormApplication): Promise<DormApplication> {
 		const { id, applicantId, academicYear, activities } = app;
 		const activityConnections = activities.map((activity) => ({

@@ -1,14 +1,19 @@
+import { inject, injectable } from "inversify";
 import { v4 as uuid } from "uuid";
 import { DormApplication } from "../../domain/entities/dorm-application.entity";
 import { ApplicationStatus } from "../../domain/enums/application-status.enum";
 import type { ActivityRepository } from "../../domain/interfaces/repositories/activity.repository";
 import type { ApplicationRepository } from "../../domain/interfaces/repositories/application.repository";
+import { TYPES } from "../../infrastructure/constants/type.constant";
 import type { SubmitApplicationDto } from "../dtos/submit-application.dto";
 
+@injectable()
 export class SubmitApplicationUseCase {
 	constructor(
-		private readonly applicationRepo: ApplicationRepository,
-		private readonly activityRepo: ActivityRepository,
+		@inject(TYPES.ApplicationRepository)
+		private applicationRepository: ApplicationRepository,
+		@inject(TYPES.ActivityRepository)
+		private activityRepository: ActivityRepository,
 	) {}
 
 	async execute(dto: SubmitApplicationDto): Promise<DormApplication> {
@@ -21,7 +26,7 @@ export class SubmitApplicationUseCase {
 		);
 
 		// ดึงกิจกรรมจาก Repository
-		const activities = await this.activityRepo.findByUser(dto.applicantId);
+		const activities = await this.activityRepository.findByUser(dto.applicantId);
 
 		// เพิ่มกิจกรรมลงใน Application
 		// TODO: Mock
@@ -30,6 +35,6 @@ export class SubmitApplicationUseCase {
 		}
 		application.validateActivityParticipation();
 		// บันทึก Application
-		return this.applicationRepo.save(application);
+		return this.applicationRepository.save(application);
 	}
 }

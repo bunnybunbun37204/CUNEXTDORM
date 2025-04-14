@@ -1,17 +1,11 @@
+import type { SubmitApplicationUseCase } from "../../../application/usecases/submit-dorm.usecase";
 // infrastructure/context.ts
-import { PrismaClient } from "@prisma/client";
-import { SubmitApplicationUseCase } from "../../../application/usecases/submit-dorm.usecase";
-import { PrismaActivityRepository } from "../../database/repositories/activity.repository";
-import { PrismaApplicationRepository } from "../../database/repositories/application.repository";
-
-const prisma = new PrismaClient();
+import container from "../../adapters/inversify/container.infrastructure";
+import { TYPES } from "../../constants/type.constant";
 
 export const createContext = () => ({
 	useCases: {
-		submitApplication: new SubmitApplicationUseCase(
-			new PrismaApplicationRepository(prisma),
-			new PrismaActivityRepository(prisma),
-		),
+		submitApplication: container.get<SubmitApplicationUseCase>(TYPES.SubmitApplicationUseCase),
 	},
 });
 
