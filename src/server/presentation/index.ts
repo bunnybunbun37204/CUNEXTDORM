@@ -1,4 +1,3 @@
-// src/trpc/app.ts หรือ src/trpc/index.ts
 import { router } from "../infrastructure/protocol/trpc/trpc";
 import { helloRouter } from "./applications/hello.application";
 import { studentRouter } from "./applications/student.application";
