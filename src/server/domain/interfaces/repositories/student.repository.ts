@@ -5,5 +5,6 @@ export interface StudentRepository {
 	findByIds(ids: string[]): Promise<Student[]>;
 	findByEmail(email: string): Promise<Student | null>;
 	save(student: Student): Promise<Student>;
+	update(student: Student): Promise<Student>;
 	delete(id: string): Promise<void>;
 }
