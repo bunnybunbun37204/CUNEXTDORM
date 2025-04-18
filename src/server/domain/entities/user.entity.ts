@@ -19,9 +19,9 @@ export class User {
 		email: string,
 		name: string,
 		role: UserRole,
-		phone: string,
-		createdAt: Date,
-		updatedAt: Date,
+		phone?: string,
+		createdAt?: Date,
+		updatedAt?: Date,
 		studentId?: string,
 	) {
 		this.id = id;
@@ -29,10 +29,11 @@ export class User {
 		this.name = name;
 		this.role = role;
 		this.studentId = studentId;
-		this.phone = phone;
+		this.phone = phone ?? "";
 		this.createdAt = createdAt ?? new Date();
 		this.updatedAt = updatedAt ?? new Date();
 	}
+
 	login(credentials: string): boolean {
 		// Login logic
 		return true;

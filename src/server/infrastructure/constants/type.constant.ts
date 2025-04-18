@@ -1,5 +1,3 @@
-import { UpdateProfileUseCase } from "../../application/usecases/update-profile.usecase";
-
 // infrastructure/constants/types.ts
 export const TYPES = {
 	// biome-ignore lint/style/useNamingConvention: <explanation>
@@ -14,4 +12,15 @@ export const TYPES = {
 	SubmitApplicationUseCase: Symbol.for("SubmitApplicationUseCase"),
 	// biome-ignore lint/style/useNamingConvention: <explanation>
 	UpdateProfileUseCase: Symbol.for("UpdateProfileUseCase"),
+};
+
+export const ENV = {
+	// biome-ignore lint/style/useNamingConvention: <explanation>
+	DeeAppId: process.env.DEE_APP_ID,
+	// biome-ignore lint/style/useNamingConvention: <explanation>
+	DeeAppSecret: process.env.DEE_APP_SECRET,
+	// biome-ignore lint/style/useNamingConvention: <explanation>
+	AUTH_URL: process.env.AUTH_URL,
+	// biome-ignore lint/style/useNamingConvention: <explanation>
+	API_URL: process.env.API_URL,
 };
