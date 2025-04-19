@@ -15,7 +15,6 @@ export const authRouter = router({
 			return ctx.useCases.auth.login(input.ticket);
 		}),
 	getUrl: publicProcedure.use(errorMiddleware).query(async ({ ctx }) => {
-		console.log("getUrl");
 		return ctx.useCases.auth.getLoginUrl();
 	}),
 });

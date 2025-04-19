@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { trpc, trpcClient } from "@/lib/trpc-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
@@ -18,7 +16,7 @@ export function Login() {
 export function LoginForm() {
 	const url = trpc.authApplication.getUrl.useQuery();
 	const onLogin = () => {
-		console.log("Url", url.data);
+		window.location.href = url.data || "";
 	};
 	return (
 		<div className="flex flex-col">
