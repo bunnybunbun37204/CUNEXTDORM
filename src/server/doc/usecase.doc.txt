@@ -1,0 +1,35 @@
+@startuml
+left to right direction
+
+actor "Student" as student
+actor "Dorm Staff" as staff
+actor "University Registry" as university
+
+rectangle "Dormitory Management System" {
+  student -- (Submit Maintenance Request)
+  student -- (Pay Rent)
+  student -- (View Room Details)
+  student -- (Update Profile)
+  student -- (Submit Extension Application)
+  student -- (Track Application Status)
+  student -- (Set Notification Preferences)
+
+  staff -- (Manage Rooms)
+  staff -- (Process Maintenance Request)
+  staff -- (Generate Reports)
+  staff -- (Update Room Status)
+  staff -- (Send Notifications)
+
+  university -- (Verify Student Status)
+
+  ' Relationships
+  (Submit Maintenance Request) .> (Log Maintenance Request) : <<include>>
+  (Pay Rent) .> (Generate Receipt) : <<include>>
+  (Submit Extension Application) .> (Validate Academic Year) : <<include>>
+  (Set Notification Preferences) <|-- (Receive Notification)
+}
+
+student --> (Receive Notification)
+staff --> (Receive Notification)
+
+@enduml

@@ -1,5 +1,5 @@
 import { createTRPCClient } from "@trpc/client";
-import type { AppRouter } from "../server/trpc";
+import type { AppRouter } from "../server/presentation/index";
 
 import { httpBatchLink } from "@trpc/client";
 
