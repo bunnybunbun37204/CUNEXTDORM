@@ -15,19 +15,30 @@ export default function CallBack() {
 }
 
 function TicketCallback() {
-	useEffect(() => {
-		// Get the current URL search parameters
-		const queryParams = new URLSearchParams(window.location.search);
-		// Extract the ticket parameter
-		const ticket = queryParams.get("ticket");
-		const result = trpc.authApplication.login.useQuery({ ticket: ticket || "" });
-		if (ticket) {
-			console.log("Result", result.data);
-			console.log("Found ticket:", ticket);
-		} else {
-			console.log("No ticket parameter in URL");
-		}
-	}, []); // Empty dependency array = runs only once on mount
+	// Get ticket from URL during render
+	const queryParams = new URLSearchParams(window.location.search);
+	const ticket = queryParams.get("ticket");
 
-	return null; // This component doesn't render anything
+	// Use useQuery at the top level with enabled option
+	const result = trpc.authApplication.login.useQuery(
+		{ ticket: ticket || "" },
+		{
+			enabled: !!ticket, // Only run query if ticket exists
+			retry: false,
+		}
+	);
+
+	// Handle query results
+	useEffect(() => {
+		if (result.data) {
+			console.log("Login result:", result.data);
+			// Handle successful login (e.g., redirect user)
+		}
+		if (result.error) {
+			console.error("Login failed:", result.error);
+			// Handle error
+		}
+	}, [result.data, result.error]);
+
+	return null;
 }
