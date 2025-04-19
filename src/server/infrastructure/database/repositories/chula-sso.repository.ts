@@ -36,9 +36,9 @@ export class PrismaChulaSsoRepository implements ChulaSsoRepository {
 	public async validateToken(token: string): Promise<User> {
 		try {
 			this.validateTokenInput(token);
-			console.info("Validating token with SSO");
-			console.info(`Token: ${token}`);
-			console.info("Building request headers:", this.buildRequestHeaders(token));
+			console.log("Validating token with SSO");
+			console.log(`Token: ${token}`);
+			console.log("Building request headers:", this.buildRequestHeaders(token));
 			const response = await axios.get<ChulaSsoResponse>(`${this.config.apiUrl}/serviceValidation`, {
 				headers: this.buildRequestHeaders(token),
 			});
