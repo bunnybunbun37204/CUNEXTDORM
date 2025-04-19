@@ -35,12 +35,14 @@ export class PrismaChulaSsoRepository implements ChulaSsoRepository {
 	public async validateToken(token: string): Promise<User> {
 		try {
 			this.validateTokenInput(token);
-
+			console.info("Validating token with SSO");
+			console.info(`Token: ${token}`);
 			const response = await this.httpClient.post<ChulaSsoResponse>(
 				`${this.config.apiUrl}/serviceValidation`,
 				this.buildRequestHeaders(token),
 			);
-
+			console.info("Building request headers:", this.buildRequestHeaders(token));
+			console.info("Token validation response:", response);
 			return this.mapToUserDomain(response.data);
 		} catch (error) {
 			this.handleError(error);
