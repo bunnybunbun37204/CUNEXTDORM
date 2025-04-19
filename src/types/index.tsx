@@ -1,4 +1,4 @@
-export interface PersonalInfo {
+export interface PersonalInfoProps {
 	fullName: string;
 	nickname: string;
 	province: string;

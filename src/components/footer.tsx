@@ -17,7 +17,7 @@ export const Footer = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLEle
 		<footer
 			ref={ref}
 			className={cn(
-				"z-50 fixed bottom-0 left-1/2 -translate-x-1/2 w-[448px] max-w-[448px] h-20 bg-black backdrop-blur-lg rounded-t-xl shadow-2xl border-t border-gray-200/60",
+				"z-50 fixed -bottom-1 left-1/2 -translate-x-1/2 w-[448px] max-w-[448px] h-20 bg-black backdrop-blur-lg rounded-t-xl shadow-2xl border-t border-gray-200/60",
 				className,
 			)}
 			aria-label="Footer Navigation"

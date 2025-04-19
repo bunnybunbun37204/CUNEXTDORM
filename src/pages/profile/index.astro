@@ -1,28 +1,7 @@
 ---
-// src/pages/index.astro
 import Layout from "@/layouts/Layout.astro";
-import PersonalInfo from "@/pages/profile/components/PersonalInfo.astro";
-
-const personalData = {
-	fullName: "เทยกิจดล รังนาถย์",
-	nickname: "ดล",
-	province: "สรัง",
-	studentId: "6534465023",
-	faculty: "คณะวิทยาศาสตร์",
-	department: "คณิตศาสตร์และวิทยาการคอมพิวเตอร์",
-	email: "Siwadolrungmart@gmail.com",
-	phone: "0630214568",
-	building: "จําปี",
-	room: "1009",
-	educationYear: "2565",
-	gpa: "4.00",
-	status: "โครงการอื่น คณะวิทยาศาสตร์",
-	academicYear: "ปีที่ 1",
-	bed: "1",
-	acNumber: "AC-123456",
-	floor: "10",
-};
+import TabSwitcher from "./components/tabSwitcher";
 ---
 <Layout>
-    <PersonalInfo data={personalData} />
+    <TabSwitcher client:load/>
 </Layout>

@@ -1,3 +1,5 @@
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Send } from "lucide-react";
 import { Component } from "react";
 
@@ -8,16 +10,13 @@ interface ReportState {
 	bed: string;
 	section: string;
 	contactNumber: string;
-	issueTypes: string[];
-	appointmentTimes: string[];
+	issueTypes: string;
+	appointmentTimes: string;
 	problemDescription: string;
 	photos: File[];
 }
-
-type ReportFormProps = Record<string, never>;
-
-export class ReportForm extends Component<ReportFormProps, ReportState> {
-	constructor(props: ReportFormProps) {
+export class ReportForm extends Component<object, ReportState> {
+	constructor(props: object) {
 		super(props);
 		this.state = {
 			reporterName: "Mr. Kiwol Rangmas",
@@ -26,20 +25,15 @@ export class ReportForm extends Component<ReportFormProps, ReportState> {
 			bed: "B",
 			section: "10",
 			contactNumber: "0630214568",
-			issueTypes: [],
-			appointmentTimes: [],
+			issueTypes: "",
+			appointmentTimes: "",
 			problemDescription: "",
 			photos: [],
 		};
 	}
 
 	handleCheckboxChange = (category: "issueTypes" | "appointmentTimes", value: string) => {
-		this.setState((prevState) => {
-			const items = prevState[category].includes(value)
-				? prevState[category].filter((item) => item !== value)
-				: [value];
-			return { [category]: items } as Pick<ReportState, typeof category>;
-		});
+		this.setState({ [category]: value } as Pick<ReportState, typeof category>);
 	};
 
 	handleSubmit = (e: React.FormEvent) => {
@@ -89,33 +83,35 @@ export class ReportForm extends Component<ReportFormProps, ReportState> {
 				{/* Issue Type */}
 				<section className="mb-6">
 					<h2 className="text-lg font-semibold mb-2">ประเภทงานซ่อม</h2>
-					{["งานประตูและลูกบิด/ประตูกระจก", "สัญญาณอินเตอร์เน็ต(WIFI)", "งานตู้น้ำดื่ม(ตู้น้ำร้อนน้ำเย็น)", "อื่น ๆ"].map((issue) => (
-						<span key={issue} className="flex items-center space-x-2 mb-2">
-							<input
-								type="checkbox"
-								checked={this.state.issueTypes.includes(issue)}
-								onChange={() => this.handleCheckboxChange("issueTypes", issue)}
-								className="form-checkbox h-4 w-4"
-							/>
-							<span className="text-gray-700">{issue}</span>
-						</span>
-					))}
+					<RadioGroup>
+						{["งานประตูและลูกบิด/ประตูกระจก", "สัญญาณอินเตอร์เน็ต(WIFI)", "งานตู้น้ำดื่ม(ตู้น้ำร้อนน้ำเย็น)", "อื่น ๆ"].map(
+							(issue, index) => (
+								<div className="flex items-center space-x-2" key={issue}>
+									<RadioGroupItem
+										value={index.toString()}
+										onClick={() => this.handleCheckboxChange("issueTypes", issue)}
+									/>
+									<Label className="text-gray-700">{issue}</Label>
+								</div>
+							),
+						)}
+					</RadioGroup>
 				</section>
 
 				{/* Appointment Time */}
 				<section className="mb-6">
 					<h2 className="text-lg font-semibold mb-2">การนัดหมาย</h2>
-					{["13:00-16:00 (ทุกวันจันทร์-ศุกร์)", "09.00-16.00 (ทุกวันเสาร์-อาทิตย์)"].map((time) => (
-						<span key={time} className="flex items-center space-x-2 mb-2">
-							<input
-								type="checkbox"
-								checked={this.state.appointmentTimes.includes(time)}
-								onChange={() => this.handleCheckboxChange("appointmentTimes", time)}
-								className="form-checkbox h-4 w-4"
-							/>
-							<span className="text-gray-700">{time}</span>
-						</span>
-					))}
+					<RadioGroup>
+						{["13:00-16:00 (ทุกวันจันทร์-ศุกร์)", "09.00-16.00 (ทุกวันเสาร์-อาทิตย์)"].map((time, index) => (
+							<div className="flex items-center space-x-2" key={time}>
+								<RadioGroupItem
+									value={index.toString()}
+									onClick={() => this.handleCheckboxChange("appointmentTimes", time)}
+								/>
+								<Label className="text-gray-700">{time}</Label>
+							</div>
+						))}
+					</RadioGroup>
 				</section>
 
 				{/* Problem Description */}
