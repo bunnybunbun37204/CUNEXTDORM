@@ -1,0 +1,8 @@
+---
+import LoginLayout from "@/layouts/LoginLayout.astro";
+import { LoginForm } from "./components/loginForm";
+---
+
+  <LoginLayout>
+        <LoginForm client:load />
+    </LoginLayout>
