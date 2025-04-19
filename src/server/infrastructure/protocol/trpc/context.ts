@@ -1,3 +1,4 @@
+import type { AuthUseCase } from "@/server/application/usecases/auth.usecase";
 import type { SubmitApplicationUseCase } from "../../../application/usecases/submit-dorm.usecase";
 import type { UpdateProfileUseCase } from "../../../application/usecases/update-profile.usecase";
 // infrastructure/context.ts
@@ -8,6 +9,7 @@ export const createContext = () => ({
 	useCases: {
 		submitApplication: container.get<SubmitApplicationUseCase>(TYPES.SubmitApplicationUseCase),
 		updateProfile: container.get<UpdateProfileUseCase>(TYPES.UpdateProfileUseCase),
+		auth: container.get<AuthUseCase>(TYPES.AuthUseCase),
 	},
 });
 

@@ -1,9 +1,11 @@
 // infrastructure/database/repositories/prisma-chula-sso.repository.ts
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { User } from "../../../domain/entities/user.entity";
 import { UserRole } from "../../../domain/enums/user-role.enum";
 import type { ChulaSsoRepository } from "../../../domain/interfaces/repositories/chula-sso.repository";
 import { InternalServerError, UnauthorizedError, ValidationError } from "../../../domain/types/error.type";
+import { TYPES } from "../../constants/type.constant";
+import type { ChulaSsoConfig } from "../../protocol/http/chula-sso.config";
 import type { HttpClient } from "../../protocol/http/http-client";
 
 interface ChulaSsoResponse {
@@ -18,13 +20,8 @@ interface ChulaSsoResponse {
 @injectable()
 export class PrismaChulaSsoRepository implements ChulaSsoRepository {
 	constructor(
-		private readonly httpClient: HttpClient,
-		private readonly config: {
-			apiUrl: string;
-			deeAppId: string;
-			deeAppSecret: string;
-			authUrl: string;
-		},
+		@inject(TYPES.HttpClient) private readonly httpClient: HttpClient,
+		@inject(TYPES.ChulaSsoConfig) private readonly config: ChulaSsoConfig,
 	) {
 		this.validateConfiguration();
 	}
