@@ -25,7 +25,7 @@ function TicketCallback() {
 		{
 			enabled: !!ticket, // Only run query if ticket exists
 			retry: false,
-		}
+		},
 	);
 
 	// Handle query results
