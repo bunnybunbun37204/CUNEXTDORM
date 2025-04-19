@@ -1,5 +1,3 @@
----
-
 ### **Use Case 1: Submit Maintenance Request (แจ้งปัญหาซ่อมแซม)**  
 - **Actors:** Student, Dorm Staff  
 - **Description:** ผู้เช่าแจ้งปัญหาซ่อมแซมผ่านระบบ และระบบบันทึกคำร้อง  
