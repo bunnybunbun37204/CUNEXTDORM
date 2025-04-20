@@ -1,7 +1,7 @@
 @startuml
 
 ' #########################
-' #       ENUMERATIONS     #
+' #     ENUMERATIONS      #
 ' #########################
 
 enum UserRole {
@@ -15,6 +15,14 @@ enum BedLabel {
   B
   C
   D
+}
+
+enum NotificationType {
+  PAYMENT_REMINDER
+  MAINTENANCE_UPDATE
+  CONTRACT_ALERT
+  SYSTEM_ANNOUNCEMENT
+  OTHER
 }
 
 enum FacilityType {
@@ -38,6 +46,13 @@ enum PaymentStatus {
   OVERDUE
 }
 
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  UNDER_REVIEW
+}
+
 ' #########################
 ' #       CLASSES         #
 ' #########################
@@ -56,6 +71,10 @@ class User {
   + login(email: String, password: String): Boolean
   + updateProfile(name: String, phone: String): void
   + submitMaintenanceRequest(description: String): MaintenanceLog
+  + submitExtensionApplication(): DormApplication
+  + payRent(): void
+  + getAgreement(): RentalAgreement
+  + notifyPayment(): void
 }
 
 class Student {
@@ -64,9 +83,9 @@ class Student {
 }
 
 class DormStaff {
-  + manageRooms(action: String, room: DormRoom): void
+  + approveApplication(applicationId: String): DormApplication
   + processMaintenanceRequest(logId: String, status: MaintenanceStatus): void
-  + generateReport(type: String): Report
+  + generateReport(type: String): void 
 }
 
 class DormBuilding {
@@ -119,6 +138,7 @@ class RentalAgreement {
 
   + renewAgreement(newEndDate: DateTime): void
   + terminateAgreement(): void
+  + findPaymentForMonth(): Float
 }
 
 class RentPayment {
@@ -141,6 +161,15 @@ class Notification {
   + markAsRead(): void
 }
 
+class Facility {
+  + id: String
+  + type: FacilityType
+  + description: String?
+  + status: String
+  + createdAt: DateTime
+  + updatedAt: DateTime
+}
+
 class DormActivity {
   - id: String
   - name: String
@@ -149,6 +178,30 @@ class DormActivity {
 
   + addParticipant(user: User): void
   + calculatePoints(): Integer
+}
+
+class DormApplication {
+  - id: String
+  - applicantId: String
+  - academicYear: String
+  - status: ApplicationStatus
+  - preferredBuildingId: String  
+  - floor: Integer
+  - requestedBeds: BedLabel   ่
+  - activities: DormActivity[]
+  - answers: Map<String, String>
+
+  + validatePreferredBuildingAvailability(): Boolean 
+  + validateAcademicYear(academicYear: Integer): Boolean
+}
+
+class DormQuestion {
+  - id: String
+  - questionText: String
+  - isRequired: Boolean
+
+  + updateQuestion(text: String): void
+  + toggleRequired(): void
 }
 
 ' #########################
@@ -161,6 +214,7 @@ User <|-- DormStaff
 User "1" -- "many" RentalAgreement : has >
 User "1" -- "many" MaintenanceLog : reports >
 User "1" -- "many" DormActivity : participates in >
+User "1" -- "many" DormApplication : submits >
 
 DormBuilding "1" -- "many" DormRoom : contains >
 DormRoom "1" -- "many" Bed : has >
@@ -173,6 +227,8 @@ RentalAgreement "1" -- "many" RentPayment : includes >
 MaintenanceLog "1" -- "0..1" Facility : affects >
 MaintenanceLog "1" -- "0..1" Bed : affects >
 
-DormActivity "1" -- "many" User : has participants >
+DormApplication "1" -- "1" DormBuilding : applies to >
+DormApplication "1" -- "1..4" Bed : requests >
+DormStaff "1" -- "many" DormApplication : approves >
 
 @enduml
