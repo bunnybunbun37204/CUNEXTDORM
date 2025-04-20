@@ -53,8 +53,8 @@ export class PrismaChulaSsoRepository implements ChulaSsoRepository {
 					DeeTicket: token,
 				},
 			});
-			console.info("Token validation response:", response);
 			const res: ChulaSsoResponse = await response.json();
+			console.log("SSO Response:", res);
 			return this.mapToUserDomain(res);
 		} catch (error) {
 			console.error("Error validating token:", error);
