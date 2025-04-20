@@ -2,7 +2,6 @@ import { Student } from "@/server/domain/entities/student.entity";
 import type { User } from "@/server/domain/entities/user.entity";
 import type { ChulaSsoRepository } from "@/server/domain/interfaces/repositories/chula-sso.repository";
 import type { StudentRepository } from "@/server/domain/interfaces/repositories/student.repository";
-import { NotFoundError } from "@/server/domain/types/error.type";
 import { TYPES } from "@/server/infrastructure/constants/type.constant";
 import { inject, injectable } from "inversify";
 
