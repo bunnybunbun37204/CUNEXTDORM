@@ -58,18 +58,7 @@ export class PrismaChulaSsoRepository implements ChulaSsoRepository {
 			return this.mapToUserDomain(res);
 		} catch (error) {
 			console.error("Error validating token:", error);
-			// this.handleError(error);
-			const user: User = new User(
-				"0",
-				"6534435223@student.chula.ac.th",
-				"Bunyawat Naunnak",
-				UserRole.Tenant,
-				"080-000-0000",
-				new Date(),
-				new Date(),
-				"6534435223",
-			);
-			return user;
+			this.handleError(error);
 		}
 	}
 
@@ -92,7 +81,7 @@ export class PrismaChulaSsoRepository implements ChulaSsoRepository {
 	}
 
 	private mapToUserDomain(response: ChulaSsoResponse): User {
-		return new User(response.ouid, response.email, response.username, this.convertSsoRoles(response.roles)[1]);
+		return new User(response.ouid, response.email, response.gecos, this.convertSsoRoles(response.roles)[1]);
 	}
 
 	public convertSsoRoles(roles: string[]): UserRole[] {
