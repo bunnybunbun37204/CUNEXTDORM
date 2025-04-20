@@ -45,7 +45,7 @@ export class PrismaChulaSsoRepository implements ChulaSsoRepository {
 			console.info("Token validation response:", response);
 			return this.mapToUserDomain(response.data);
 		} catch (error) {
-			// console.error("Error validating token:", error);
+			console.error("Error validating token:", error);
 			// this.handleError(error);
 			const user: User = new User(
 				"0",
