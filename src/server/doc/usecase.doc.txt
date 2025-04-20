@@ -29,7 +29,5 @@ rectangle "Dormitory Management System" {
   (Set Notification Preferences) <|-- (Receive Notification)
 }
 
-student --> (Receive Notification)
-staff --> (Receive Notification)
 
 @enduml
