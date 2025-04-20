@@ -38,9 +38,15 @@ export class PrismaChulaSsoRepository implements ChulaSsoRepository {
 			this.validateTokenInput(token);
 			console.log("Validating token with SSO");
 			console.log(`Token: ${token}`);
-			console.log("Building request headers:", this.buildRequestHeaders(token));
 			const response = await fetch(`${this.config.apiUrl}/serviceValidation`, {
-				headers: this.buildRequestHeaders(token),
+				headers: {
+					// biome-ignore lint/style/useNamingConvention: <explanation>
+					DeeAppId: this.config.deeAppId,
+					// biome-ignore lint/style/useNamingConvention: <explanation>
+					DeeAppSecret: this.config.deeAppSecret,
+					// biome-ignore lint/style/useNamingConvention: <explanation>
+					DeeTicket: token,
+				}
 			});
 			console.info("Token validation response:", response);
 			const res: ChulaSsoResponse = await response.json();
