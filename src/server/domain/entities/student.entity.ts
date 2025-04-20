@@ -1,17 +1,33 @@
+import { UserRole } from "../enums/user-role.enum";
 import type { DormActivity } from "./dorm-activity.entity";
+import type { RentPayment } from "./rent-payment.entity";
 import { User } from "./user.entity";
 
 export class Student extends User {
-	private dormactivities: DormActivity[] = [];
-	viewPaymentHistory(): void {
-		// Logic to view payment history
+	constructor(
+		id: string,
+		name: string,
+		email: string,
+		phone: string,
+		private dormActivities?: DormActivity[],
+		private rentPayments?: RentPayment[],
+	) {
+		super(id, name, email, UserRole.Tenant, phone);
+		super.setRole(UserRole.Tenant);
+	}
+
+	viewPaymentHistory(): RentPayment[] {
+		if (!this.rentPayments) return [];
+		return this.rentPayments;
 	}
 	participateActivities(activity: DormActivity): void {
 		// Logic to participate in activities
 		// e.g., register for an event
-		this.dormactivities.push(activity);
+		if (!this.dormActivities) return;
+		this.dormActivities.push(activity);
 	}
 	getDormActivities(): DormActivity[] {
-		return this.dormactivities;
+		if (!this.dormActivities) return [];
+		return this.dormActivities;
 	}
 }

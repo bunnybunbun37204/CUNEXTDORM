@@ -4,8 +4,6 @@ export class DormActivity {
 		public readonly name: string,
 		public readonly description: string,
 		public readonly date: Date,
-		public readonly duration: number, // Duration in hours
-		public readonly location: string,
-		public readonly participants: number,
+		public readonly maxPoints: number,
 	) {}
 }

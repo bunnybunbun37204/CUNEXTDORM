@@ -1,3 +1,4 @@
+import { Student } from "@/server/domain/entities/student.entity";
 import type { User } from "@/server/domain/entities/user.entity";
 import type { ChulaSsoRepository } from "@/server/domain/interfaces/repositories/chula-sso.repository";
 import type { StudentRepository } from "@/server/domain/interfaces/repositories/student.repository";
@@ -19,7 +20,9 @@ export class AuthUseCase {
 		const result = await this.chulaSsoRepository.validateToken(token);
 		const user = await this.studentRepository.findByEmail(result.getEmail());
 		if (user === null) {
-			throw new NotFoundError("User not found");
+			const newUser = new Student(result.getId(), result.getEmail(), result.getName(), result.getPhone());
+			await this.studentRepository.save(newUser);
+			return newUser;
 		}
 		return user;
 	}

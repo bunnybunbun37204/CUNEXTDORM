@@ -33,18 +33,7 @@ export class PrismaApplicationRepository implements ApplicationRepository {
 			savedApp.applicantId,
 			savedApp.academicYear,
 			savedApp.status as EnumApplicationStatus,
-			savedApp.activities.map(
-				(a) =>
-					new DormActivity(
-						a.id,
-						a.name,
-						"",
-						a.date,
-						a.maxPoints,
-						"Unknown Location", // Replace with actual location if available
-						0, // Replace with actual participants count if available
-					),
-			),
+			savedApp.activities.map((a) => new DormActivity(a.id, a.name, a.description ?? "", a.date, a.maxPoints)),
 		);
 	}
 	async findById(id: string): Promise<DormApplication | null> {
