@@ -13,6 +13,7 @@ rectangle "Dormitory Management System" {
   student -- (Submit Extension Application)
   student -- (Track Application Status)
   student -- (Set Notification Preferences)
+  student -- (View Rent History)
 
   staff -- (Manage Rooms)
   staff -- (Process Maintenance Request)
