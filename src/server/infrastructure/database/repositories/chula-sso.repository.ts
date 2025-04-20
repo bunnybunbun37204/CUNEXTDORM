@@ -46,7 +46,7 @@ export class PrismaChulaSsoRepository implements ChulaSsoRepository {
 					DeeAppSecret: this.config.deeAppSecret,
 					// biome-ignore lint/style/useNamingConvention: <explanation>
 					DeeTicket: token,
-				}
+				},
 			});
 			console.info("Token validation response:", response);
 			const res: ChulaSsoResponse = await response.json();
