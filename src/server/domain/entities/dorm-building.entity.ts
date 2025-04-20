@@ -9,7 +9,7 @@ export class DormBuilding {
 		private updatedAt: Date,
 		private room: DormRoom[],
 	) {}
-    
+
 	getId(): string {
 		return this.id;
 	}
@@ -22,9 +22,9 @@ export class DormBuilding {
 		return this.address;
 	}
 
-    getCreatedAt(): Date {
-        return this.createdAt;
-    }
+	getCreatedAt(): Date {
+		return this.createdAt;
+	}
 
 	addRoom(room: DormRoom): void {
 		this.room.push(room);
