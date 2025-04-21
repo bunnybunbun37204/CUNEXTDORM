@@ -12,7 +12,7 @@ export class DormApplication {
 		public readonly applicantId: string,
 		public readonly academicYear: string,
 		public status: ApplicationStatus,
-		public activities: DormActivity[] = [], // เพิ่ม field นี้
+		public activities: DormActivity[] = [],
 	) {}
 
 	// Business Rule 1: ต้องตอบคำถามบังคับทั้งหมด

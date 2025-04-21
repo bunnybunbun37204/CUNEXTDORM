@@ -32,6 +32,11 @@ function TicketCallback() {
 	useEffect(() => {
 		if (result.data) {
 			console.log("Login result:", result.data);
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			const data = result.data as any;
+			const uid = data.id; // Replace 'id' with an existing property
+			localStorage.setItem("uid", uid);
+			window.location.href = "/"; // Redirect to home page
 			// Handle successful login (e.g., redirect user)
 		}
 		if (result.error) {
