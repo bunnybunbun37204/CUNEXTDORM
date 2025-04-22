@@ -13,7 +13,7 @@ interface PersonalityState {
 	bed: string;
 	startingSemester: string;
 	startingYear: string;
-	confirmBed: boolean;
+	confirmBed: boolean | null;
 	errors: Record<string, string>;
 }
 
@@ -32,7 +32,7 @@ export class PersonalityForm extends Component<object, PersonalityState> {
 			bed: "",
 			startingSemester: "",
 			startingYear: "",
-			confirmBed: false,
+			confirmBed: null,
 			errors: {},
 		};
 	}

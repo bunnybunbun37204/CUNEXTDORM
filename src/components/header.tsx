@@ -8,7 +8,7 @@ export const Header = React.forwardRef<HTMLInputElement, InputProps>(({ classNam
 		<header
 			className={cn("z-50 h-24 fixed w-[448px] top-0 flex items-center justify-center bg-black text-white", className)}
 		>
-			<img src="/src/assets/logoChula.png" alt="logo chulalongkorn" />
+			<img src="/logoChula.png" alt="logo chulalongkorn" />
 		</header>
 	);
 });
