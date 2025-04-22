@@ -80,7 +80,7 @@ export class PersonalityForm extends Component<object, PersonalityState> {
 						/>
 						<img
 							src={this.state.profileImage || "/default-avatar.png"}
-							alt="Profile"
+							alt=""
 							className="h-32 w-32 rounded-full mx-auto mb-2 border-4 border-gray-200"
 						/>
 						<p className="text-blue-600">คลิกเพื่ออัปโหลดรูปโปรไฟล์</p>

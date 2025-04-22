@@ -52,12 +52,12 @@ export function LoginForm() {
 					</div>
 				</div>
 				{/* Form Section */}
-				<form className="bg-white rounded-2xl p-6 space-y-6 shadow-sm absolute w-full top-22 pb-12">
+				<div className="bg-white rounded-2xl p-6 space-y-6 shadow-sm absolute w-full top-22 pb-12">
 					{/* Login Button */}
 					<Button className="w-full rounded-lg h-11 text-md " onClick={onLogin}>
 						Login
 					</Button>
-				</form>
+				</div>
 			</div>
 		</div>
 	);
