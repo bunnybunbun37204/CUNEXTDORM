@@ -70,18 +70,6 @@ export class BehaviorForm extends Component<object, BehaviorState> {
 					</div>
 				</section>
 
-				{/* Password Section */}
-				<section className="inline-flex">
-					<Label>Password : </Label>
-					<Input
-						type="password"
-						value={this.state.password}
-						onChange={(e) => this.setState({ password: e.target.value })}
-						placeholder="รหัส CUNEX"
-						className="w-1/2 mx-2"
-					/>
-				</section>
-
 				<Button type="submit" className="w-full">
 					ส่งข้อมูล
 				</Button>

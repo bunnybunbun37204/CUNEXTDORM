@@ -19,7 +19,7 @@ export class ExtendingForm extends Component {
 				<Tabs defaultValue="personality" className="w-full">
 					<TabsList className="flex w-full bg-black">
 						{this.tabs.map((tab) => (
-							<TabsTrigger
+							<TabsTrigger 
 								key={tab.value}
 								value={tab.value}
 								className="text-white data-[state=active]:bg-white data-[state=active]:text-black"
