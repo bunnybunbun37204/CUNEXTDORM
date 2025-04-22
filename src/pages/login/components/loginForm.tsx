@@ -16,6 +16,7 @@ export function Login() {
 export function LoginForm() {
 	const url = trpc.authApplication.getUrl.useQuery();
 	const onLogin = () => {
+		console.log("Login clicked, url: ", url.data);
 		window.location.href = url.data || "";
 	};
 	return (
